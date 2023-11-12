@@ -52,4 +52,16 @@ If you encounter issues, ensure you closed all previous Chrome instances before 
 For feedback or support, please raise an issue on [[GitHub Repository](https://github.com/RandomInternetPreson/LucidWebSearch)https://github.com/RandomInternetPreson/LucidWebSearch].
 
 ## How it works
-When you start a 
+When you enter a phrase beginning with `search` the text after the word search will be entered into the Google Chrome browser as a google search.
+
+The resulting web page is printed as temp_webpage.pdf
+
+This printed web page is scanned and the text and links are separated out into website_links.txt and website_text.txt files
+
+The website_text.txt is sent to the AI with your request and incorporated into its response
+
+If the user is satisfied with the response no additional input is needed, however if the user wants to dive deeper into a subject they can ask the AI to retrieve a number of urls from the initial Google search.
+
+When you enter a phrase beginning with `additional links` along with some context like the number of links, the AI is fed the website_links.txt file and then chooses which link to reply back with based off the user criteria.
+
+The link(s) are parsed out of the AI's response and each link in the response is visited and digested when you enter a phrase beginning with `please expand` The AI will go to each site and contextualized the users requests when providing an output.
