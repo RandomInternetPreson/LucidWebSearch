@@ -114,7 +114,8 @@ def extract_content_from_url(query):
     extract_text_and_links_from_pdf(pdf_path, output_txt_path, append=False)
     
     #pdf_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\temp_webpage.pdf"  # Update with your actual PDF file path
-    output_txt_pathLinks = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_links.txt"  # Update with your desired output file path
+    #output_txt_pathLinks = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_links.txt"  # Update with your desired output file path
+    output_txt_pathLinks = output_txt_path_links
 
     # Extract clickable links from the PDF and write them to a text file
     extract_clickable_links_from_pdf(pdf_path, output_txt_pathLinks, append=False)
@@ -129,8 +130,8 @@ def extract_content_from_url_links(query):
 
     
     #pdf_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\temp_webpage.pdf"  # Update with your actual PDF file path
-    output_txt_pathLinks = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_links.txt"  # Update with your desired output file path
-
+    #output_txt_pathLinks = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_links.txt"  # Update with your desired output file path
+    output_txt_pathLinks = output_txt_path_links
     # Extract clickable links from the PDF and write them to a text file
     #extract_clickable_links_from_pdf(pdf_path, output_txt_pathLinks, append=False)
 
@@ -250,7 +251,8 @@ def input_modifier(user_input, state):
                 extract_content_from_url_ExpandedSearch(url)
 
             # After processing all URLs, read the content from website_text.txt
-            temp_links_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_text.txt"
+            #temp_links_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_text.txt"
+            temp_links_path = output_txt_path
             with open(temp_links_path, 'r', encoding='utf-8') as file:
                 search_data = file.read()
 
@@ -337,7 +339,8 @@ def output_modifier(output):
 
     if additional_links_flag:
         # Write output to a text file when the flag is True
-        with open(r"L:\OobTesting\text-generation-webui-main\extensions\web_search\additional_links_output.txt", 'w') as file:
+        #with open(r"L:\OobTesting\text-generation-webui-main\extensions\web_search\additional_links_output.txt", 'w') as file:
+        with open(additional_links_output_path, 'w') as file:
             file.write(output)
         additional_links_flag = False  # Reset the flag after writing
 
