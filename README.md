@@ -45,3 +45,6 @@ If you encounter issues, ensure you closed all previous Chrome instances before 
 
 ## Feedback and Support
 For feedback or support, please raise an issue on [[GitHub Repository](https://github.com/RandomInternetPreson/LucidWebSearch)https://github.com/RandomInternetPreson/LucidWebSearch].
+
+## How it works
+When you start a 
