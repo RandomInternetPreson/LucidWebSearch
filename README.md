@@ -65,3 +65,5 @@ If the user is satisfied with the response no additional input is needed, howeve
 When you enter a phrase beginning with `additional links` along with some context like the number of links, the AI is fed the website_links.txt file and then chooses which link to reply back with based off the user criteria.
 
 The link(s) are parsed out of the AI's response and each link in the response is visited and digested when you enter a phrase beginning with `please expand` The AI will go to each site and contextualized the users requests when providing an output.
+
+I don't know much python and I started my project by editing code here: https://github.com/simbake/web_search specifically code for the input_modifier and ui checkbox.
