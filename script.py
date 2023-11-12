@@ -293,7 +293,11 @@ def ui():
           &nbsp;&nbsp;&nbsp;&nbsp;Step 1: Close all instances of Chrome  
           &nbsp;&nbsp;&nbsp;&nbsp;Step 2: enter this into a seperate Windows command prompt (change the chrome.exe location if it is installed somewhere different than the example) --incognito can be added at the end to open in that mode: "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222   
         - **Enable Google Search**: Toggle this to activate or deactivate the web search feature.
-        - **Web Search Fetch Length (characters)**: Specify the maximum length of content to fetch (in characters). This helps in limiting the response for large web pages.
+        - **Web Search Fetch Length (characters)**: Specify the maximum length of content to fetch (in characters). This helps in limiting the response for large web pages.  
+        - **The workflow follows this sequence of trigger statments that must start the user input**  
+          &nbsp;&nbsp;&nbsp;&nbsp;`search`  
+          &nbsp;&nbsp;&nbsp;&nbsp;`additional links`  
+          &nbsp;&nbsp;&nbsp;&nbsp;`please expand`  
         - **Search**: Type 'search' followed by your query to search the web.  
           &nbsp;&nbsp;&nbsp;&nbsp;Example: `search recent submarine implosion`  
           &nbsp;&nbsp;&nbsp;&nbsp;Example: `search current time in Austin Texas ** do not reply with anything extra, simply the date and time please`  
