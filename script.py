@@ -325,6 +325,9 @@ def ui():
 
         ### Feedback and Support
         - For feedback or support, please raise an issue on [https://github.com/RandomInternetPreson/LucidWebSearch].
+
+        ### How it works
+        - For feedback or support, please raise an issue on [https://github.com/RandomInternetPreson/LucidWebSearch/tree/main#how-it-works].
         """))
     checkbox = gr.Checkbox(value=search_access, label="Enable Google Search")
     textbox = gr.Textbox(value=str(fetch_length), label="Web Search Fetch Length (characters)")
