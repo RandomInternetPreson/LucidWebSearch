@@ -66,4 +66,5 @@ When you enter a phrase beginning with `additional links` along with some contex
 
 The link(s) are parsed out of the AI's response and each link in the response is visited and digested when you enter a phrase beginning with `please expand` The AI will go to each site and contextualized the users requests when providing an output.
 
+## Extras
 I don't know much python and I started my project by editing code here: https://github.com/simbake/web_search specifically code for the input_modifier and ui checkbox.
