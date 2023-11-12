@@ -15,6 +15,11 @@ https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/a136bac1-0
 
 **Web Search Fetch Length (characters)**: Specify the maximum length of content to fetch (in characters). This helps in limiting the response for large web pages.
 
+**The workflow follows this sequence of trigger statments that must start the user input**  
+          &nbsp;&nbsp;&nbsp;&nbsp;`search`  
+          &nbsp;&nbsp;&nbsp;&nbsp;`additional links`  
+          &nbsp;&nbsp;&nbsp;&nbsp;`please expand` 
+          
 **Search**: Type 'search' followed by your query to search the web.  
           &nbsp;&nbsp;&nbsp;&nbsp;Example: `search recent submarine implosion`  
           &nbsp;&nbsp;&nbsp;&nbsp;Example: `search current time in Austin Texas ** do not reply with anything extra, simply the date and time please`  
