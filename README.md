@@ -2,6 +2,8 @@
 A web search extension for Oobabooga's text-generation-webui
 
 
+https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/a136bac1-0e16-47cb-a005-80a8d06a11b4
+
 ## Instructions for Use
 **This only works with Google Chrome working in debugging mode**  
           &nbsp;&nbsp;&nbsp;&nbsp;Step 1: Close all instances of Chrome  
