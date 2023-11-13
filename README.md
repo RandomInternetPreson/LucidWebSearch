@@ -31,7 +31,10 @@ https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/a136bac1-0
           &nbsp;&nbsp;&nbsp;&nbsp;Be careful, the AI will visit each link it lists and gather data from each when you invoke the **please expand** input.  
           
 **Please Expand**: Use this command to expand on the fetched content.  
-          &nbsp;&nbsp;&nbsp;&nbsp;Example: `please expand search the page for more information and then generate a 5 paragraph report for me`  
+          &nbsp;&nbsp;&nbsp;&nbsp;Example: `please expand search the page for more information and then generate a 5 paragraph report for me`
+
+**Go To**: Use this command to go to a specific website.  
+          &nbsp;&nbsp;&nbsp;&nbsp;Example: `go to https://forecast.weather.gov/MapClick.php?lat=38.579440000000034&lon=-121.49084999999997 and give me a 5 day forcast in an ascii formatted table`
           
 ## Recommendations
 It is recommended that you run your textgen-webui interface in a browser other than Chrome.  In addition have both browsers open and in view so you can monitor the sites the AI is visiting.  
