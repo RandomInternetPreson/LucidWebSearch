@@ -141,7 +141,7 @@ def extract_content_from_url_links(query):
     return content
 
 # New function for expanded search
-def extract_content_from_url_ExpandedSearch(url):
+def extract_content_from_url_ExpandedSearch(url, should_append):
     chrome_options = Options()
     chrome_options.add_experimental_option("debuggerAddress", "localhost:9222")
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
@@ -153,11 +153,9 @@ def extract_content_from_url_ExpandedSearch(url):
 
     driver.quit()
 
-    #output_txt_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_text.txt"
-    extract_text_and_links_from_pdf(pdf_path, output_txt_path, append=False)
-    
-    #output_txt_path_links = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_links.txt"
-    extract_clickable_links_from_pdf(pdf_path, output_txt_path_links, append=False)
+    extract_text_and_links_from_pdf(pdf_path, output_txt_path, append=should_append)
+    extract_clickable_links_from_pdf(pdf_path, output_txt_path_links, append=should_append)
+
 
     return "Content extracted from URL: " + url
 
@@ -246,14 +244,16 @@ def input_modifier(user_input, state):
                 content = file.read()
                 urls = extract_urls_from_text(content)
 
+            should_append = len(urls) > 1
+            
             # Process each URL and append the content
             for url in urls:
-                extract_content_from_url_ExpandedSearch(url)
+                extract_content_from_url_ExpandedSearch(url, should_append)
 
             # After processing all URLs, read the content from website_text.txt
             #temp_links_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_text.txt"
-            temp_links_path = output_txt_path
-            with open(temp_links_path, 'r', encoding='utf-8') as file:
+            #temp_links_path = output_txt_path
+            with open(output_txt_path, 'r', encoding='utf-8') as file:
                 search_data = file.read()
 
             user_prompt = f"User request: {user_input}\n Extracted content: {search_data}"
