@@ -42,7 +42,7 @@ https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/907e0cd9-8
           &nbsp;&nbsp;&nbsp;&nbsp;Example: `please expand search the page for more information and then generate a 5 paragraph report for me`
 
 **Go To**: Use this command to go to a specific website.  
-          &nbsp;&nbsp;&nbsp;&nbsp;Example: Example: `go to https://forecast.weather.gov/MapClick.php?lat=38.579440000000034&lon=-121.49084999999997 and give me a 5 day forcast using only cute emojis in a table format` If doing multiple urls put spaces (not commas) between each url.  
+          &nbsp;&nbsp;&nbsp;&nbsp;Example: `go to https://forecast.weather.gov/MapClick.php?lat=38.579440000000034&lon=-121.49084999999997 and give me a 5 day forcast using only cute emojis in a table format` If doing multiple urls put spaces (not commas) between each url.  
           
 ## Recommendations
 It is recommended that you run your textgen-webui interface in a browser other than Chrome.  In addition have both browsers open and in view so you can monitor the sites the AI is visiting.  
