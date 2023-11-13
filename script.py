@@ -39,18 +39,6 @@ def print_to_pdf(driver, file, margin_top=0, margin_bottom=0, margin_left=0, mar
         f.write(base64.b64decode(result['data']))
 
 # Function to extract text and links from a PDF and write to a file
-# def extract_text_and_links_from_pdf(pdf_path, output_txt_path, append=False):
-    # mode = 'a' if append else 'w'
-    # with open(output_txt_path, mode, encoding='utf-8') as file:
-        # doc = fitz.open(pdf_path)
-        # for page_num, page in enumerate(doc):
-            # file.write(f"Page {page_num + 1}\n\n")
-            # file.write(page.get_text() + '\n')
-            # links = page.get_links()
-            # for link in links:
-                # if 'uri' in link:
-                    # file.write("Link: " + link['uri'] + '\n')
-            # file.write("\n")
 
 def extract_text_and_links_from_pdf(pdf_path, output_txt_path, append=False):
     mode = 'a' if append else 'w'
@@ -61,19 +49,7 @@ def extract_text_and_links_from_pdf(pdf_path, output_txt_path, append=False):
             file.write(page.get_text() + '\n')  # Text of the page
             file.write("\n")  # Add space between pages
             
-# # Function to extract clickable links from a PDF
-# def extract_clickable_links_from_pdf(pdf_path, output_txt_path, append=False):
-    # mode = 'a' if append else 'w'
-    # with open(output_txt_path, mode, encoding='utf-8') as file, fitz.open(pdf_path) as doc:
-        # for page_num, page in enumerate(doc):
-            # file.write(f"Page {page_num + 1}\n\n")
-            
-            # # Iterate through all links on the page
-            # links = page.get_links()
-            # for link in links:
-                # if 'uri' in link:
-                    # file.write(f"Link: {link['uri']}\n")
-            # file.write("\n")
+
             
 # Function to extract clickable links from a PDF, excluding links containing 'google'
 def extract_clickable_links_from_pdf(pdf_path, output_txt_path, append=False):
@@ -105,20 +81,15 @@ def extract_content_from_url(query):
     url = construct_url(query)
     driver.get(url)
 
-    #pdf_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\temp_webpage.pdf"
     print_to_pdf(driver, pdf_path, margin_top=0.4, margin_bottom=0.4, margin_left=0.4, margin_right=0.4)
 
     driver.quit()
 
-    #output_txt_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_text.txt"
     extract_text_and_links_from_pdf(pdf_path, output_txt_path, append=False)
     
-    #pdf_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\temp_webpage.pdf"  # Update with your actual PDF file path
-    #output_txt_pathLinks = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_links.txt"  # Update with your desired output file path
-    output_txt_pathLinks = output_txt_path_links
 
     # Extract clickable links from the PDF and write them to a text file
-    extract_clickable_links_from_pdf(pdf_path, output_txt_pathLinks, append=False)
+    extract_clickable_links_from_pdf(pdf_path, output_txt_path_links, append=False)
 
     with open(output_txt_path, 'r', encoding='utf-8') as file:
         content = file.read()
@@ -128,14 +99,7 @@ def extract_content_from_url(query):
 
 def extract_content_from_url_links(query):
 
-    
-    #pdf_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\temp_webpage.pdf"  # Update with your actual PDF file path
-    #output_txt_pathLinks = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_links.txt"  # Update with your desired output file path
-    output_txt_pathLinks = output_txt_path_links
-    # Extract clickable links from the PDF and write them to a text file
-    #extract_clickable_links_from_pdf(pdf_path, output_txt_pathLinks, append=False)
-
-    with open(output_txt_pathLinks, 'r', encoding='utf-8') as file:
+    with open(output_txt_path_links, 'r', encoding='utf-8') as file:
         content = file.read()
 
     return content
@@ -148,7 +112,6 @@ def extract_content_from_url_ExpandedSearch(url, should_append):
 
     driver.get(url)
 
-    #pdf_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\temp_webpage.pdf"
     print_to_pdf(driver, pdf_path, margin_top=1.25, margin_bottom=1.25, margin_left=1.25, margin_right=1.25)
 
     driver.quit()
@@ -160,17 +123,7 @@ def extract_content_from_url_ExpandedSearch(url, should_append):
     return "Content extracted from URL: " + url
 
 
-# def extract_urls_from_text(text):
-    # urls = []
-    # for line in text.split('\n'):
-        # if line.startswith('http') or 'http' in line:
-            # # Extract the URL from markdown link format [Link Text](URL)
-            # start = line.find('(')
-            # end = line.find(')', start + 1)
-            # if start != -1 and end != -1:
-                # url = line[start+1:end]
-                # urls.append(url)
-    # return urls
+
     
 def extract_urls_from_text(text):
     # Define pairs of start and end indicators
@@ -179,6 +132,7 @@ def extract_urls_from_text(text):
         ('http://', '&gt;'),
         ('http://', ')'),
         ('https://', ')'),
+        ('https://', ' '),
         # Add more pairs as needed
     ]
 
@@ -202,15 +156,7 @@ additional_links_flag = False  # Global variable to track the "additional links"
 def input_modifier(user_input, state):
     global additional_links_flag, fetch_length  # Use the global variable
     if search_access:
-        # if user_input.lower().startswith("search"):
-            # shared.processing_message = "*Searching online...*"
-            # query = user_input.replace("search", "").strip()
-            # state["context"] = "The answer to User question is provided to you in a generated content. Give a truthful and correct answer. Answer the question"
-            # search_data = extract_content_from_url(query)
-            # user_prompt = f"User question: {user_input}\n Extracted content: {search_data}"
-            # print (user_prompt)
-            # return str(user_prompt)
-        # shared.processing_message = "*Typing...*"
+
         
         if user_input.lower().startswith("search"):
             shared.processing_message = "*Searching online...*"
@@ -238,7 +184,6 @@ def input_modifier(user_input, state):
         
         if user_input.lower().startswith("please expand"):
             shared.processing_message = "*Searching online...*"
-            #additional_links_output_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\additional_links_output.txt"
             
             with open(additional_links_output_path, 'r', encoding='utf-8') as file:
                 content = file.read()
@@ -251,8 +196,28 @@ def input_modifier(user_input, state):
                 extract_content_from_url_ExpandedSearch(url, should_append)
 
             # After processing all URLs, read the content from website_text.txt
-            #temp_links_path = r"L:\OobTesting\text-generation-webui-main\extensions\web_search\website_text.txt"
-            #temp_links_path = output_txt_path
+            with open(output_txt_path, 'r', encoding='utf-8') as file:
+                search_data = file.read()
+
+            user_prompt = f"User request: {user_input}\n Extracted content: {search_data}"
+            user_prompt = user_prompt[:fetch_length]
+            return str(user_prompt)
+
+        shared.processing_message = "*Typing...*"
+        
+        
+        if user_input.lower().startswith("go to "):
+            shared.processing_message = "*Searching online...*"
+            query = user_input.replace("go to ", "").strip()
+            urls = extract_urls_from_text(query)
+
+            should_append = len(urls) > 1
+            
+            # Process each URL and append the content
+            for url in urls:
+                extract_content_from_url_ExpandedSearch(url, should_append)
+
+            # After processing all URLs, read the content from website_text.txt
             with open(output_txt_path, 'r', encoding='utf-8') as file:
                 search_data = file.read()
 
@@ -277,12 +242,6 @@ def update_fetch_length(new_length):
         pass  # In case of invalid input, keep the old value
     return fetch_length
 
-
-# def ui():
-    # global search_access
-    # checkbox = gr.Checkbox(value=search_access, label="Enable Google Search")
-    # checkbox.change(fn=update_search_access, inputs=checkbox)
-    # return checkbox, search_access
     
 def ui():
     global search_access, fetch_length
@@ -291,13 +250,14 @@ def ui():
         ### Instructions for Use
         - **This only works with Google Chrome working in debugging mode**  
           &nbsp;&nbsp;&nbsp;&nbsp;Step 1: Close all instances of Chrome  
-          &nbsp;&nbsp;&nbsp;&nbsp;Step 2: enter this into a seperate Windows command prompt (change the chrome.exe location if it is installed somewhere different than the example) --incognito can be added at the end to open in that mode: `"C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222`   
+          &nbsp;&nbsp;&nbsp;&nbsp;Step 2: enter this into a seperate Windows command prompt (change the chrome.exe location if it is installed somewhere different than the example) --incognito can be added at the end to open in that mode: `"C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222`  
         - **Enable Google Search**: Toggle this to activate or deactivate the web search feature.
         - **Web Search Fetch Length (characters)**: Specify the maximum length of content to fetch (in characters). This helps in limiting the response for large web pages.  
         - **The workflow follows this sequence of trigger statments that must start the user input**  
           &nbsp;&nbsp;&nbsp;&nbsp;`search`  
           &nbsp;&nbsp;&nbsp;&nbsp;`additional links`  
           &nbsp;&nbsp;&nbsp;&nbsp;`please expand`  
+          &nbsp;&nbsp;&nbsp;&nbsp;`go to`          
         - **Search**: Type 'search' followed by your query to search the web.  
           &nbsp;&nbsp;&nbsp;&nbsp;Example: `search recent submarine implosion`  
           &nbsp;&nbsp;&nbsp;&nbsp;Example: `search current time in Austin Texas ** do not reply with anything extra, simply the date and time please`  
@@ -308,6 +268,8 @@ def ui():
           &nbsp;&nbsp;&nbsp;&nbsp;Be careful, the AI will visit each link it lists and gather data from each when you invoke the **please expand** input.  
         - **Please Expand**: Use this command to expand on the fetched content.  
           &nbsp;&nbsp;&nbsp;&nbsp;Example: `please expand search the page for more information and then generate a 5 paragraph report for me`  
+        - **Go To**: Use this command to go to a specific website(s).  
+          &nbsp;&nbsp;&nbsp;&nbsp;Example: `go to https://forecast.weather.gov/MapClick.php?lat=38.579440000000034&lon=-121.49084999999997 and give me a 5 day forcast in an ascii formatted table`           
           
         ### Recommendations
         - It is recommended that you run your textgen-webui interface in a browser other than Chrome.  In addition have both browsers open and in view so you can monitor the sites the AI is visiting.  
@@ -346,7 +308,6 @@ def output_modifier(output):
 
     if additional_links_flag:
         # Write output to a text file when the flag is True
-        #with open(r"L:\OobTesting\text-generation-webui-main\extensions\web_search\additional_links_output.txt", 'w') as file:
         with open(additional_links_output_path, 'w') as file:
             file.write(output)
         additional_links_flag = False  # Reset the flag after writing
