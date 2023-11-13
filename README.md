@@ -5,7 +5,9 @@ A web search extension for Oobabooga's text-generation-webui
 https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/a136bac1-0e16-47cb-a005-80a8d06a11b4
 
 
-https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/ea07bbc2-a695-428a-80eb-e53b7e0467d1
+
+https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/907e0cd9-8535-4700-9984-773e6b8b3a0d
+
 
 
 
