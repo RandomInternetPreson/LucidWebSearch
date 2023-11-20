@@ -133,7 +133,8 @@ def extract_urls_from_text(text):
         ('http://', ')'),
         ('https://', ')'),
         ('https://', ' '),
-        # Add more pairs as needed
+        ('https://', '>'),
+        # Add more pairs as needed added yet another pair, the variosu AIs have a plethora of ways to terminate and html in text when responding :c
     ]
 
     urls = []
