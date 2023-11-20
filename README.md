@@ -81,3 +81,10 @@ At any point the user can invoke the `go to` request, the user follows the reque
 
 ## Extras
 I don't know much python and I started my project by editing code here: https://github.com/simbake/web_search specifically code for the input_modifier and ui checkbox.
+
+This is a video of how to install a different extension, but it is the same set of steps, just don't do "pip install TTS --no-dependencies"
+
+https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/d9240c23-1aa6-43e5-ad19-6854017fb611
+
+
+
