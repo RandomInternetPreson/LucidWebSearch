@@ -1,4 +1,4 @@
-# LucidWebSearch
+# LucidWebSearch (now with OCR)
 A web search extension for Oobabooga's text-generation-webui
 
 
@@ -43,6 +43,20 @@ https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/907e0cd9-8
 
 **Go To**: Use this command to go to a specific website.  
           &nbsp;&nbsp;&nbsp;&nbsp;Example: `go to https://forecast.weather.gov/MapClick.php?lat=38.579440000000034&lon=-121.49084999999997 and give me a 5 day forcast using only cute emojis in a table format` If doing multiple urls put spaces (not commas) between each url.  
+
+ ### Enable Auto PDF
+If you "go to" a web page the is a pdf or your AI picks a web page that is a pdf, this will automatically use OCR to scan the downloaded pdf.  
+Example `go to https://physics.uwo.ca/~mhoude2/courses/PDF%20files/physics1501/Ch5-Gravitation.pdf and pick out a cool equation to explain to me`
+
+### OCR Model Selection
+You can select between 2 OCR models, a small and large model.  The small model will use about ~13GB with the large model using about 2.5GB+ more.  You can run the OCR models in a CPU mode, but 5GB of vram will still be used.  The OCR model nouget does not have a means of forcing the model to use CPU mode, however if you replace the device.py file with the one from my repo you can make it happen (LINK).  
+
+### Full Precision Option
+Only applicable if you are running in CPU mode, this can speed up inferencing, enable it if CPU mode is too slow for you.  
+
+### OCR Everything
+Enabling this will execute OCR on both web pages and .pdf web pages. Very useful if doing research where scientific and mathematical symbols are displayed on a web page.  
+Example `go to https://en.wikipedia.org/wiki/Quantum_mechanics and write out the equation for the time evolution of a quantum state described by the Schrödinger equation that you read in the page, and explain each variable. When you are writing out the equations, can you give me markdown outputs and make sure there is only a single dollar sign at the beginning and end of the equation so I can render it with markdown?`
           
 ## Recommendations
 It is recommended that you run your textgen-webui interface in a browser other than Chrome.  In addition have both browsers open and in view so you can monitor the sites the AI is visiting.  
