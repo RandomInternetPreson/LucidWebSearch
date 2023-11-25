@@ -8,8 +8,8 @@ https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/a136bac1-0
 
 https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/907e0cd9-8535-4700-9984-773e6b8b3a0d
 
-
-
+**Example with OCR Everything On**
+![OCR_EverythingExample](https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/523e8d89-ae19-4a4c-b321-fff141001d39)
 
 ## Instructions for Use
 **This only works with Google Chrome working in debugging mode**  
