@@ -340,7 +340,7 @@ def ui():
         Example `go to https://physics.uwo.ca/~mhoude2/courses/PDF%20files/physics1501/Ch5-Gravitation.pdf and pick out a cool equation to explain to me`
 
         ### OCR Model Selection
-        - You can select between 2 OCR models, a small and large model.  The small model will use about ~13GB with the large model using about 2.5GB+ more.  You can run the OCR models in a CPU mode, but 5GB of vram will still be used.  The OCR model nouget does not have a means of forcing the model to use CPU mode, however if you replace the device.py file with the one from my repo you can make it happen (LINK).  
+        - You can select between 2 OCR models, a small and large model.  The small model will use about ~13GB with the large model using about 2.5GB+ more.  You can run the OCR models in a CPU mode, but 5GB of vram will still be used.  The OCR model nouget does not have a means of forcing the model to use CPU mode, however if you replace the device.py file with the one from my repo you can make it happen https://github.com/RandomInternetPreson/LucidWebSearch/blob/main/README.md#insructions-for-getting-cpu-mode-low-vram-to-work 
 
         ### Full Precision Option
         - Only applicable if you are running in CPU mode, this can speed up inferencing, enable it if CPU mode is too slow for you.  
