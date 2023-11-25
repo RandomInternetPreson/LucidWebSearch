@@ -1,4 +1,4 @@
-# LucidWebSearch (now with nouget OCR)
+# LucidWebSearch (now with nougat OCR)
 https://github.com/facebookresearch/nougat  
 A web search extension for Oobabooga's text-generation-webui https://github.com/oobabooga/text-generation-webui
 
