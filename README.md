@@ -110,7 +110,7 @@ Upon please expand each web page will either be:
 
 2. If the hyperlink is a .pdf file (ends in .pdf) it will undergo 1 of 2 processes:  
   2a. sent to the same python code that scans the printed .pdf file, and parses text and hyperlinks the same way  
-  2b. send to the OCR model where a .mmd file is generated, and those data are sent to the LLM (no hyperlinks are parsed)  
+  2b. sent to the OCR model where a .mmd file is generated, and those data are sent to the LLM (no hyperlinks are parsed)  
 
 3. Printed and sent to the OCR model (hyperlinks are parsed). This is useful if you need to scan web pages with mathematic and scientific symbols.  
 
