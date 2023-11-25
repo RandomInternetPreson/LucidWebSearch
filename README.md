@@ -106,13 +106,13 @@ The LLM does an initial google search, collects the links, then can pick from th
 
 Upon please expand each web page will either be:  
 
-Printed to a pdf and the contents of the pdf collected into a text file that is eventually sent back to the LLM, in this case hyperlinks and text from the pdf are collected and stored in two different txt files.  
+1. Printed to a pdf and the contents of the pdf collected into a text file that is eventually sent back to the LLM, in this case hyperlinks and text from the pdf are collected and stored in two different txt files.  
 
-If the hyperlink is a .pdf file (ends in .pdf) it will undergo 1 of 2 processes:  
-2a. sent to the same python code that scans the printed .pdf file, and parses text and hyperlinks the same way  
-2b. send to the OCR model where a .mmd file is generated, and those data are sent to the LLM (no hyperlinks are parsed)  
+2. If the hyperlink is a .pdf file (ends in .pdf) it will undergo 1 of 2 processes:  
+  2a. sent to the same python code that scans the printed .pdf file, and parses text and hyperlinks the same way  
+  2b. send to the OCR model where a .mmd file is generated, and those data are sent to the LLM (no hyperlinks are parsed)  
 
-Printed and sent to the OCR model (hyperlinks are parsed). This is useful if you need to scan web pages with mathematic and scientific symbols.  
+3. Printed and sent to the OCR model (hyperlinks are parsed). This is useful if you need to scan web pages with mathematic and scientific symbols.  
 
 The same proccesses are executed on the "go to" command.
 
