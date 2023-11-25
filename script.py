@@ -9,8 +9,15 @@ import base64
 import fitz  # PyMuPDF
 import os
 import textwrap
+import requests
+import subprocess
 
-search_access = False
+search_access = True
+use_large_ocr_model = False
+use_full_precision = False
+ocr_everything = False
+auto_pdf_link_ocr = True
+
 
 #"C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222
 base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -23,7 +30,7 @@ additional_links_output_path = os.path.join(base_dir, "additional_links_output.t
 
 
 # Function to print page as PDF with specified margins
-def print_to_pdf(driver, file, margin_top=0, margin_bottom=0, margin_left=0, margin_right=0):
+def print_to_pdf(driver, file, margin_top=1.25, margin_bottom=1.25, margin_left=1.25, margin_right=1.25):
     print_options = {
         'landscape': False,
         'displayHeaderFooter': False,
@@ -104,7 +111,9 @@ def extract_content_from_url_links(query):
 
     return content
 
-# New function for expanded search
+
+# ...
+
 def extract_content_from_url_ExpandedSearch(url, should_append):
     chrome_options = Options()
     chrome_options.add_experimental_option("debuggerAddress", "localhost:9222")
@@ -112,16 +121,70 @@ def extract_content_from_url_ExpandedSearch(url, should_append):
 
     driver.get(url)
 
-    print_to_pdf(driver, pdf_path, margin_top=1.25, margin_bottom=1.25, margin_left=1.25, margin_right=1.25)
+    if url.endswith('.pdf'):
+        # Download the PDF using requests
+        response = requests.get(url)
+        if response.status_code == 200:
+            pdf_filename = os.path.join(base_dir, os.path.basename(url))
+            with open(pdf_filename, 'wb') as file:
+                file.write(response.content)
+
+            if auto_pdf_link_ocr:
+                # Perform OCR if auto_pdf_link_ocr is True
+                nougat_cmd = ["nougat", pdf_filename, "-o", base_dir, "--no-markdown", "--recompute"]
+                if use_large_ocr_model:
+                    nougat_cmd.extend(["-m", "0.1.0-base"])
+                if use_full_precision:
+                    nougat_cmd.append("--full-precision")
+                subprocess.run(nougat_cmd)
+
+                # Construct the path to the .mmd file within the output directory
+                mmd_filename = os.path.join(base_dir, os.path.basename(pdf_filename).replace('.pdf', '.mmd'))
+
+                # Write the OCR output to website_text.txt
+                try:
+                    with open(mmd_filename, 'r') as mmd_file, open(output_txt_path, 'a' if should_append else 'w') as txt_file:
+                        txt_file.write(mmd_file.read())
+                except PermissionError as e:
+                    print(f"PermissionError: {e}")
+            else:
+                # Just extract text and links if auto_pdf_link_ocr is False
+                extract_text_and_links_from_pdf(pdf_filename, output_txt_path, append=should_append)
+                extract_clickable_links_from_pdf(pdf_filename, output_txt_path_links, append=should_append)
+        else:
+            print(f"Failed to download PDF from {url}. Status code: {response.status_code}")
+    else:
+        # Process for non-PDF URLs
+        print_to_pdf(driver, pdf_path, margin_top=1.25, margin_bottom=1.25, margin_left=1.25, margin_right=1.25)
+
+        # Extract clickable links from the printed PDF
+        extract_clickable_links_from_pdf(pdf_path, output_txt_path_links, append=should_append)
+
+        if ocr_everything:
+            # Perform OCR using nougat, specifying the output directory
+            nougat_cmd = ["nougat", pdf_path, "-o", base_dir, "--no-markdown", "--recompute"]
+            if use_large_ocr_model:
+                nougat_cmd.extend(["-m", "0.1.0-base"])
+            if use_full_precision:
+                nougat_cmd.append("--full-precision")
+            subprocess.run(nougat_cmd)
+
+            # Construct the path to the .mmd file within the output directory
+            mmd_filename = os.path.join(base_dir, "temp_webpage.mmd")
+
+            # Write the OCR output to website_text.txt
+            try:
+                with open(mmd_filename, 'r') as mmd_file, open(output_txt_path, 'a' if should_append else 'w') as txt_file:
+                    txt_file.write(mmd_file.read())
+            except PermissionError as e:
+                print(f"PermissionError: {e}")
+        else:
+            # Original processing for non-OCR
+            extract_text_and_links_from_pdf(pdf_path, output_txt_path, append=should_append)
 
     driver.quit()
 
-    extract_text_and_links_from_pdf(pdf_path, output_txt_path, append=should_append)
-    extract_clickable_links_from_pdf(pdf_path, output_txt_path_links, append=should_append)
-
-
     return "Content extracted from URL: " + url
-
 
 
     
@@ -163,7 +226,7 @@ def input_modifier(user_input, state):
             shared.processing_message = "*Searching online...*"
             # Split the input at the colon and use the part before the colon
             query = user_input.split("**")[0].replace("search", "").strip()
-            state["context"] = "The answer to User question is provided to you in a generated content. Give a truthful and correct answer. Answer the question"
+            state["context"] = "The answer to User question is provided to you in a generated content. Give a truthful and correct answer. Answer the question and do not apologize"
             search_data = extract_content_from_url(query)
             user_prompt = f"User question: {user_input}\n Extracted content: {search_data}"
             user_prompt = user_prompt[:fetch_length]
@@ -175,7 +238,7 @@ def input_modifier(user_input, state):
             additional_links_flag = True
             shared.processing_message = "*Searching online...*"
             query = user_input.replace("additional links", "").strip()
-            state["context"] = "You are given a list of hyperlinks, choose up to 5 that you think will best answer the Users' question"
+            state["context"] = "You are given a list of hyperlinks, choose up to 5 that you think will best answer the Users' question and do not apologize"
             search_data = extract_content_from_url_links(query)
             user_prompt = f"User request: {user_input}\n Extracted content: {search_data}"
             user_prompt = user_prompt[:fetch_length]
@@ -200,7 +263,7 @@ def input_modifier(user_input, state):
             with open(output_txt_path, 'r', encoding='utf-8') as file:
                 search_data = file.read()
 
-            user_prompt = f"User request: {user_input}\n Extracted content: {search_data}"
+            user_prompt = f"User request: {user_input}\n Extracted content, remove extra formatting when returning markdown text, return simple markdown when rendering text that is provided in markdown and do not apologize: {search_data}"
             user_prompt = user_prompt[:fetch_length]
             return str(user_prompt)
 
@@ -222,7 +285,7 @@ def input_modifier(user_input, state):
             with open(output_txt_path, 'r', encoding='utf-8') as file:
                 search_data = file.read()
 
-            user_prompt = f"User request: {user_input}\n Extracted content: {search_data}"
+            user_prompt = f"User request: {user_input}\n Extracted content and do not apologize: {search_data}"
             user_prompt = user_prompt[:fetch_length]
             return str(user_prompt)
 
@@ -245,7 +308,7 @@ def update_fetch_length(new_length):
 
     
 def ui():
-    global search_access, fetch_length
+    global search_access, fetch_length, use_large_ocr_model, use_full_precision, ocr_everything, auto_pdf_link_ocr
     with gr.Accordion("Please Read To use LucidWebSearch Properly", open=False):
         gr.Markdown(textwrap.dedent("""
         ### Instructions for Use
@@ -271,10 +334,25 @@ def ui():
           &nbsp;&nbsp;&nbsp;&nbsp;Example: `please expand search the page for more information and then generate a 5 paragraph report for me`  
         - **Go To**: Use this command to go to a specific website(s).  
           &nbsp;&nbsp;&nbsp;&nbsp;Example: `go to https://forecast.weather.gov/MapClick.php?lat=38.579440000000034&lon=-121.49084999999997 and give me a 5 day forcast using only cute emojis in a table format` If doing multiple urls put spaces (not commas) between each url.         
-          
+        
+        ### Enable Auto PDF
+        - If you "go to" a web page the is a pdf or your AI picks a web page that is a pdf, this will automatically use OCR to scan the downloaded pdf.  
+        Example `go to https://physics.uwo.ca/~mhoude2/courses/PDF%20files/physics1501/Ch5-Gravitation.pdf and pick out a cool equation to explain to me`
+
+        ### OCR Model Selection
+        - You can select between 2 OCR models, a small and large model.  The small model will use about ~13GB with the large model using about 2.5GB+ more.  You can run the OCR models in a CPU mode, but 5GB of vram will still be used.  The OCR model nouget does not have a means of forcing the model to use CPU mode, however if you replace the device.py file with the one from my repo you can make it happen (LINK).  
+
+        ### Full Precision Option
+        - Only applicable if you are running in CPU mode, this can speed up inferencing, enable it if CPU mode is too slow for you.  
+
+        ### OCR Everything
+        - Enabling this will execute OCR on both web pages and .pdf web pages. Very useful if doing research where scientific and mathematical symbols are displayed on a web page.  
+        Example `go to https://en.wikipedia.org/wiki/Quantum_mechanics and write out the equation for the time evolution of a quantum state described by the Schrödinger equation that you read in the page, and explain each variable. When you are writing out the equations, can you give me markdown outputs and make sure there is only a single dollar sign at the beginning and end of the equation so I can render it with markdown?`
+        
         ### Recommendations
         - It is recommended that you run your textgen-webui interface in a browser other than Chrome.  In addition have both browsers open and in view so you can monitor the sites the AI is visiting.  
         - Use with Superbooga(v1 or v2) to help retain multiple search sessions if doing a lot of researching.
+        
         ### Safety and Privacy
         - Please avoid searching for sensitive or personal information.  
         - Your Google Chrome browser will be used to executes searches, be mindful of the sites you give the AI access to under your various logged in websites.  Monitor the websites your AI is visiting through the chat and the open instance of Google Chrome.  
@@ -292,12 +370,41 @@ def ui():
         ### How it works
         - For feedback or support, please raise an issue on https://github.com/RandomInternetPreson/LucidWebSearch/tree/main#how-it-works
         """))
+    auto_pdf_link_ocr_radio = gr.Radio(choices=["Enable Auto PDF Link OCR", "Disable Auto PDF Link OCR"], value="Enable Auto PDF Link OCR", label="Auto PDF Link OCR Option, if disabled will not automatically use OCR to read urls that point to pdfs")
+    ocr_model_radio = gr.Radio(choices=["Use Small OCR Model", "Use Large OCR Model"], value="Use Small OCR Model", label="OCR Model Selection, small is ~13GB with the large model using about 2.5GB+ more, CPU is ~5GB of VRAM (see device.py replacement in repo)")
+    full_precision_radio = gr.Radio(choices=["Disable Full Precision", "Enable Full Precision"], value="Disable Full Precision", label="Full Precision Option (can speed up OCR if using CPU device.py file)")
+    ocr_everything_radio = gr.Radio(choices=["Disable OCR Everything", "Enable OCR Everything"], value="Disable OCR Everything", label="OCR Everything Option, will OCR web pages and pdfs, useful for web pages with lots of equations")
     checkbox = gr.Checkbox(value=search_access, label="Enable Google Search")
     textbox = gr.Textbox(value=str(fetch_length), label="Web Search Fetch Length (characters)")
+    
     checkbox.change(fn=update_search_access, inputs=checkbox)
     textbox.change(fn=update_fetch_length, inputs=textbox)
-    return gr.Column([checkbox, textbox]), search_access
+    full_precision_radio.change(fn=update_full_precision, inputs=full_precision_radio)
+    ocr_everything_radio.change(fn=update_ocr_everything, inputs=ocr_everything_radio)
+    ocr_model_radio.change(fn=update_ocr_model, inputs=ocr_model_radio)
+    auto_pdf_link_ocr_radio.change(fn=update_auto_pdf_link_ocr, inputs=auto_pdf_link_ocr_radio)
+    return gr.Column([checkbox, textbox, ocr_model_radio, full_precision_radio, ocr_everything_radio, auto_pdf_link_ocr_radio]), search_access
     
+def update_auto_pdf_link_ocr(radio_value):
+    global auto_pdf_link_ocr
+    auto_pdf_link_ocr = (radio_value == "Enable Auto PDF Link OCR")
+    return auto_pdf_link_ocr
+
+    
+def update_ocr_everything(radio_value):
+    global ocr_everything
+    ocr_everything = (radio_value == "Enable OCR Everything")
+    return ocr_everything
+    
+def update_full_precision(radio_value):
+    global use_full_precision
+    use_full_precision = (radio_value == "Enable Full Precision")
+    return use_full_precision
+    
+def update_ocr_model(radio_value):
+    global use_large_ocr_model
+    use_large_ocr_model = (radio_value == "Use Large OCR Model")
+    return use_large_ocr_model 
     
 def update_search_access(checkbox_value):
     global search_access
