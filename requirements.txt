@@ -2,3 +2,5 @@ selenium==4.13.0
 beautifulsoup4
 webdriver-manager
 PyMuPDF
+requests
+nougat-ocr
