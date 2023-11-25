@@ -81,6 +81,7 @@ Step 2: Make a backup of device.py
 Step 3: Replace device.py with https://github.com/RandomInternetPreson/LucidWebSearch/blob/main/device_LowVramCPUMODE.py, rename device_LowVramCPUMODE.py to device.py  
 
 ## How it works
+
 When you enter a phrase beginning with `search` the text after the word search will be entered into the Google Chrome browser as a google search.
 
 The resulting web page is printed as temp_webpage.pdf
@@ -97,12 +98,27 @@ The link(s) are parsed out of the AI's response and each link in the response is
 
 At any point the user can invoke the `go to` request, the user follows the request with a url and some context, then the LLM goes to the site(s) to review the contents and responds while trying to accomidate the user's request.
 
+*OCR Update  
+
+The LLM does an initial google search, collects the links, then can pick from those links or let the user guide them on which and how many links to choose. The set of interactions are represented like this:  
+
+"search" > "additional links" > "please expand"  
+
+Upon please expand each web page will either be:  
+
+Printed to a pdf and the contents of the pdf collected into a text file that is eventually sent back to the LLM, in this case hyperlinks and text from the pdf are collected and stored in two different txt files.  
+
+If the hyperlink is a .pdf file (ends in .pdf) it will undergo 1 of 2 processes:  
+2a. sent to the same python code that scans the printed .pdf file, and parses text and hyperlinks the same way  
+2b. send to the OCR model where a .mmd file is generated, and those data are sent to the LLM (no hyperlinks are parsed)  
+
+Printed and sent to the OCR model (hyperlinks are parsed). This is useful if you need to scan web pages with mathematic and scientific symbols.  
+
+The same proccesses are executed on the "go to" command.
+
 ## Extras
 I don't know much python and I started my project by editing code here: https://github.com/simbake/web_search specifically code for the input_modifier and ui checkbox.
 
 This is a video of how to install a different extension, but it is the same set of steps, just don't do "pip install TTS --no-dependencies"
 
 https://github.com/RandomInternetPreson/LucidWebSearch/assets/6488699/d9240c23-1aa6-43e5-ad19-6854017fb611
-
-
-
