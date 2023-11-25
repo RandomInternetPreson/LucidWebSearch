@@ -75,9 +75,9 @@ If you encounter issues, ensure you closed all previous Chrome instances before 
 For feedback or support, please raise an issue on [[GitHub Repository](https://github.com/RandomInternetPreson/LucidWebSearch)https://github.com/RandomInternetPreson/LucidWebSearch].
 
 ## Insructions For Getting CPU mode (low Vram) to work
-Step 1: Go here in your textgen install folder: text-generation-webui-main\installer_files\env\Lib\site-packages\nougat\utils
-Step 2: Make a backup of device.py
-Step 3: Replace device.py with https://github.com/RandomInternetPreson/LucidWebSearch/blob/main/device_LowVramCPUMODE.py, rename device_LowVramCPUMODE.py to device.py
+Step 1: Go here in your textgen install folder: text-generation-webui-main\installer_files\env\Lib\site-packages\nougat\utils  
+Step 2: Make a backup of device.py  
+Step 3: Replace device.py with https://github.com/RandomInternetPreson/LucidWebSearch/blob/main/device_LowVramCPUMODE.py, rename device_LowVramCPUMODE.py to device.py  
 
 ## How it works
 When you enter a phrase beginning with `search` the text after the word search will be entered into the Google Chrome browser as a google search.
