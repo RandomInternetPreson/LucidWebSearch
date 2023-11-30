@@ -1,4 +1,5 @@
 # LucidWebSearch (now with nougat ... OCR)
+(I will be adding full cpu mode soon)  
 https://github.com/facebookresearch/nougat  
 A web search extension for Oobabooga's text-generation-webui https://github.com/oobabooga/text-generation-webui
 
