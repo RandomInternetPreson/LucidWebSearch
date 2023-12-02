@@ -15,6 +15,7 @@ import subprocess
 search_access = True
 use_large_ocr_model = False
 use_full_precision = False
+use_low_vram = False
 ocr_everything = False
 auto_pdf_link_ocr = True
 
@@ -132,10 +133,17 @@ def extract_content_from_url_ExpandedSearch(url, should_append):
             if auto_pdf_link_ocr:
                 # Perform OCR if auto_pdf_link_ocr is True
                 nougat_cmd = ["nougat", pdf_filename, "-o", base_dir, "--no-markdown", "--recompute"]
+
                 if use_large_ocr_model:
                     nougat_cmd.extend(["-m", "0.1.0-base"])
-                if use_full_precision:
+
+                if use_full_precision and use_low_vram:
+                    nougat_cmd.extend(["--full-precision", "--batchsize", "1"])
+                elif use_full_precision:
                     nougat_cmd.append("--full-precision")
+                elif use_low_vram:
+                    nougat_cmd.extend(["--batchsize", "1"])
+
                 subprocess.run(nougat_cmd)
 
                 # Construct the path to the .mmd file within the output directory
@@ -162,11 +170,18 @@ def extract_content_from_url_ExpandedSearch(url, should_append):
 
         if ocr_everything:
             # Perform OCR using nougat, specifying the output directory
-            nougat_cmd = ["nougat", pdf_path, "-o", base_dir, "--no-markdown", "--recompute"]
+            nougat_cmd = ["nougat", pdf_filename, "-o", base_dir, "--no-markdown", "--recompute"]
+
             if use_large_ocr_model:
                 nougat_cmd.extend(["-m", "0.1.0-base"])
-            if use_full_precision:
+
+            if use_full_precision and use_low_vram:
+                nougat_cmd.extend(["--full-precision", "--batchsize", "1"])
+            elif use_full_precision:
                 nougat_cmd.append("--full-precision")
+            elif use_low_vram:
+                nougat_cmd.extend(["--batchsize", "1"])
+
             subprocess.run(nougat_cmd)
 
             # Construct the path to the .mmd file within the output directory
@@ -308,7 +323,7 @@ def update_fetch_length(new_length):
 
     
 def ui():
-    global search_access, fetch_length, use_large_ocr_model, use_full_precision, ocr_everything, auto_pdf_link_ocr
+    global search_access, fetch_length, use_large_ocr_model, use_full_precision, use_low_vram, ocr_everything, auto_pdf_link_ocr
     with gr.Accordion("Please Read To use LucidWebSearch Properly", open=False):
         gr.Markdown(textwrap.dedent("""
         ### Instructions for Use
@@ -373,6 +388,7 @@ def ui():
     auto_pdf_link_ocr_radio = gr.Radio(choices=["Enable Auto PDF Link OCR", "Disable Auto PDF Link OCR"], value="Enable Auto PDF Link OCR", label="Auto PDF Link OCR Option, if disabled will not automatically use OCR to read urls that point to pdfs")
     ocr_model_radio = gr.Radio(choices=["Use Small OCR Model", "Use Large OCR Model"], value="Use Small OCR Model", label="OCR Model Selection, small is ~13GB with the large model using about 2.5GB+ more, CPU is ~5GB of VRAM (see device.py replacement in repo)")
     full_precision_radio = gr.Radio(choices=["Disable Full Precision", "Enable Full Precision"], value="Disable Full Precision", label="Full Precision Option (can speed up OCR if using CPU device.py file)")
+    low_vram_radio = gr.Radio(choices=["Disable Low Vram", "Enable Low Vram"], value="Disable Low Vram", label="Low Vram is the best I can do right now in lieu of no direct CPU only support")
     ocr_everything_radio = gr.Radio(choices=["Disable OCR Everything", "Enable OCR Everything"], value="Disable OCR Everything", label="OCR Everything Option, will OCR web pages and pdfs, useful for web pages with lots of equations")
     checkbox = gr.Checkbox(value=search_access, label="Enable Google Search")
     textbox = gr.Textbox(value=str(fetch_length), label="Web Search Fetch Length (characters)")
@@ -380,10 +396,11 @@ def ui():
     checkbox.change(fn=update_search_access, inputs=checkbox)
     textbox.change(fn=update_fetch_length, inputs=textbox)
     full_precision_radio.change(fn=update_full_precision, inputs=full_precision_radio)
+    low_vram_radio.change(fn=update_low_vram, inputs=low_vram_radio)
     ocr_everything_radio.change(fn=update_ocr_everything, inputs=ocr_everything_radio)
     ocr_model_radio.change(fn=update_ocr_model, inputs=ocr_model_radio)
     auto_pdf_link_ocr_radio.change(fn=update_auto_pdf_link_ocr, inputs=auto_pdf_link_ocr_radio)
-    return gr.Column([checkbox, textbox, ocr_model_radio, full_precision_radio, ocr_everything_radio, auto_pdf_link_ocr_radio]), search_access
+    return gr.Column([checkbox, textbox, ocr_model_radio, full_precision_radio, low_vram_radio, ocr_everything_radio, auto_pdf_link_ocr_radio]), search_access
     
 def update_auto_pdf_link_ocr(radio_value):
     global auto_pdf_link_ocr
@@ -400,6 +417,11 @@ def update_full_precision(radio_value):
     global use_full_precision
     use_full_precision = (radio_value == "Enable Full Precision")
     return use_full_precision
+    
+def update_low_vram(radio_value):
+    global use_low_vram
+    use_low_vram = (radio_value == "Enable Low Vram")
+    return use_low_vram
     
 def update_ocr_model(radio_value):
     global use_large_ocr_model
