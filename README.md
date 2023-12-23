@@ -1,3 +1,4 @@
+Note you do not need to have your browser open side by side with the textgen ui (as the videos below show), you can minimize the search window if you like.
 # LucidWebSearch (now with nougat ... OCR)
 (I will be adding full cpu mode soon)  
 https://github.com/facebookresearch/nougat  
