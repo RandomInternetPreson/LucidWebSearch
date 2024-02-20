@@ -1,4 +1,4 @@
-Update-Feb-19-2024: if you do not want to use the command window to open chrome and do not need to log into any accounts or have a need to watch the AI use the web, you can use the scriptALTHeadless.py file.  Replace the script.py file with the scriptALTHeadless.py file (rename scriptALTHeadless.py to script.py); this is the less ideal recommendation but many just want something that works without needing to do anything extra.
+Update-Feb-19-2024: *In beta this code variant may not work for you, if you do not want to use the command window to open chrome and do not need to log into any accounts or have a need to watch the AI use the web, you can use the scriptALTHeadless.py file.  Replace the script.py file with the scriptALTHeadless.py file (rename scriptALTHeadless.py to script.py); this is the less ideal recommendation but many just want something that works without needing to do anything extra.
 
 Note you do not need to have your browser open side by side with the textgen ui (as the videos below show), you can minimize the search window if you like.
 # LucidWebSearch (now with nougat ... OCR)
