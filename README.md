@@ -1,3 +1,5 @@
+Update-Jul-7-2024: I am working on updating this, expect updates within the next few weeks.  I want to integrate marker as an additional OCR and integrate some of the feedback form users, stay tuned!
+
 Update-Feb-19-2024: *scriptALTHeadless.py is in beta, script.py will work, if you do not want to use the command window to open chrome and do not need to log into any accounts or have a need to watch the AI use the web, you can use the scriptALTHeadless.py file.  Replace the script.py file with the scriptALTHeadless.py file (rename scriptALTHeadless.py to script.py); this is the less ideal recommendation but many just want something that works without needing to do anything extra.
 
 Note you do not need to have your browser open side by side with the textgen ui (as the videos below show), you can minimize the search window if you like.
